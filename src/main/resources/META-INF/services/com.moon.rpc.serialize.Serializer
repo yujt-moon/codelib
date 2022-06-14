@@ -1,0 +1,3 @@
+com.moon.rpc.serialize.MetadataSerializer
+com.moon.rpc.serialize.StringSerializer
+com.moon.rpc.serialize.RpcRequestSerializer

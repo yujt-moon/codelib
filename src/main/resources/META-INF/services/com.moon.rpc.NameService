@@ -1,0 +1,2 @@
+com.moon.rpc.nameservice.LocalFileNameService
+#com.moon.rpc.nameservice.JDBCNameService

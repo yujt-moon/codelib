@@ -1,0 +1,119 @@
+<mapper namespace="com.moon.mybatis.BookDao">
+    <select id="queryBookById"
+            parameterType="com.moon.entity.Book"
+            resultType="com.moon.entity.Book"
+            statementType="prepared">
+        SELECT * FROM book
+        <where>
+            AND id = #{id}
+            <if test="name != null and name != ''">
+                AND name like '${name}%'
+                <if test="name != null and name != ''">
+                    AND 1=1
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <select id="queryBookByIds"
+            resultType="com.moon.entity.Book"
+            statementType="prepared">
+        SELECT id, name, author_id as author FROM book
+        <where>
+            AND id in
+            <foreach collection="array" item="item" index="index" separator="," open="(" close=")">
+                ${item.id}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="queryBookByIds2"
+            parameterType="com.moon.entity.Book"
+            resultType="com.moon.entity.SimpleBook"
+            statementType="prepared">
+        SELECT id, name, author_id as author FROM book
+        <where>
+            AND id in
+            <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+                ${item.id}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="queryBookWithChoose"
+            parameterType="com.moon.entity.Book"
+            resultType="com.moon.entity.Book" statementType="prepared">
+        SELECT * FROM book
+        <where>
+            <choose>
+                <when test="id != null">
+                    AND ID = #{id}
+                </when>
+                <when test="name != null">
+                    AND NAME like '%${name}%'
+                </when>
+                <otherwise>
+                    <if test="status != null">
+                    AND status = #{status}
+                    </if>
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <insert id="addBook" parameterType="com.moon.entity.Book" useGeneratedKeys="true" keyProperty="id">
+        insert into book(name, intro) values (#{name}, #{intro})
+    </insert>
+
+    <insert id="insertBookWithId" parameterType="com.moon.entity.Book">
+        insert into book(id, name, intro) values (#{id}, #{name}, #{intro})
+    </insert>
+
+    <update id="update" parameterType="com.moon.entity.Book">
+        update book
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="bookCover != null and bookCover != ''">
+                bookCover = #{bookCover},
+            </if>
+            <if test="intro != null and intro != ''">
+                intro = #{intro},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBook" parameterType="com.moon.entity.Book">
+        delete from book where id = #{id}
+    </delete>
+
+    <select id="queryBlogInfo" resultMap="detailedBlogResultMap">
+        select
+            b.id,
+            b.title,
+            a.name,
+            p.post_content
+        from
+            blog b
+        left join author a on b.author_id = a.id
+        left join post p on b.id = p.blog_id
+    </select>
+
+    <resultMap id="detailedBlogResultMap" resultType="com.moon.mybatis.entity.Blog">
+        <!-- 定义映射中使用的构造函数 -->
+        <constructor>
+            <idArg column="blog_id" javaType="int" />
+        </constructor>
+        <!-- 映射普通属性 -->
+        <result property="title" column="title" />
+        <!-- 嵌套映射 JavaBean 类型的属性 -->
+        <association property="author" resultType="com.moon.mybatis.entity.Author" />
+        <!-- 映射集合类型的属性 -->
+        <collection property="posts" ofType="com.moon.mybatis.entity.Post">
+            <id property="id" column="post_id" />
+            <result property="content" column="post_content" />
+        </collection>
+    </resultMap>
+</mapper>

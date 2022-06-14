@@ -1,0 +1,50 @@
+<mapper namespace="com.moon.mybatis.mapperproxy.BookMapper">
+    <select id="queryBookById"
+            parameterType="com.moon.entity.Book"
+            resultType="com.moon.entity.Book"
+            statementType="prepared">
+        SELECT * FROM book
+        <where>
+            AND id = #{id}
+            <if test="name != null and name != ''">
+                AND name like '${name}%'
+            </if>
+        </where>
+    </select>
+
+    <insert id="addBook" parameterType="com.moon.entity.Book" useGeneratedKeys="true" keyProperty="id">
+        insert into book(name, intro) values (#{name}, #{intro})
+    </insert>
+
+    <update id="update" parameterType="com.moon.entity.Book">
+        update book
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="bookCover != null and bookCover != ''">
+                bookCover = #{bookCover},
+            </if>
+            <if test="intro != null and intro != ''">
+                intro = #{intro},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBook" parameterType="com.moon.entity.Book">
+        delete from book where id = #{id}
+    </delete>
+
+    <select id="queryBookByIds"
+            resultType="com.moon.entity.Book"
+            statementType="prepared">
+        SELECT id, name, author_id as author FROM book
+        <where>
+            AND id in
+            <foreach collection="array" item="item" index="index" separator="," open="(" close=")">
+                ${item.id}
+            </foreach>
+        </where>
+    </select>
+</mapper>

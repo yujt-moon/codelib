@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * @Described：堆溢出测试
- * @VM args:-verbose:gc -Xms20M -Xmx20M -XX:+PrintGCDetails
+ * @VM args:-verbose:gc -Xms20M -Xmx20M -XX:+PrintGCDetails -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/yujt/logs/
  * @author YHJ create at 2011-11-12 下午07:52:22
  * @FileNmae com.yhj.jvm.memory.heap.HeapOutOfMemory.java
  */

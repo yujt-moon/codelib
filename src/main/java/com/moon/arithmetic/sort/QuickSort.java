@@ -33,6 +33,8 @@ public class QuickSort {
         arr[start] = arr[i];
         arr[i] = pivotValue;
 
+        System.out.println(Arrays.toString(arr));
+
         // 递归分区，处理子问题
         if(i > start) {
             partion(arr, start, i - 1);

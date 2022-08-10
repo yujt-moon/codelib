@@ -9,7 +9,8 @@ import java.lang.reflect.Method;
 /**
  * @Described：方法区溢出测试
  * 使用技术 CBlib
- * @VM args : -XX:PermSize=10M -XX:MaxPermSize=10M
+ * @VM args 1.7 : -XX:PermSize=10M -XX:MaxPermSize=10M -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/yujt/logs/
+ * @VM args 1.8 : -XX:MetaspaceSize=10M -XX:MaxMetaspaceSize=10M -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/yujt/logs/
  * @author YHJ create at 2011-11-12 下午08:47:55
  * @FileNmae com.yhj.jvm.memory.methodArea.MethodAreaOutOfMemory.java
  */
